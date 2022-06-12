@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0 <0.9.0;
 
 contract DynamicArrays {
@@ -21,7 +21,7 @@ contract DynamicArrays {
         numbers.pop();
     }
 
-    function f() {
+    function f() public {
         uint[] memory arr = new uint[](3);
         arr[0] = 10;
         arr[1] = 20;
