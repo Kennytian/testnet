@@ -32,7 +32,7 @@ contract GlobalVariables {
         for (uint256 i = 1; i < 20; i++) {
             j *= i;
         }
-        uint256 end = gesleft();
+        uint256 end = gasleft();
         return start - end;
     }
 }
