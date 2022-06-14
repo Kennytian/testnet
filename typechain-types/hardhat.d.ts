@@ -57,6 +57,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.School__factory>;
     getContractFactory(
+      name: "Lottery",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Lottery__factory>;
+    getContractFactory(
       name: "Auction",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Auction__factory>;
@@ -80,6 +84,10 @@ declare module "hardhat/types/runtime" {
       name: "B",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.B__factory>;
+    getContractFactory(
+      name: "C",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.C__factory>;
 
     getContractAt(
       name: "ERC20",
@@ -137,6 +145,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.School>;
     getContractAt(
+      name: "Lottery",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Lottery>;
+    getContractAt(
       name: "Auction",
       address: string,
       signer?: ethers.Signer
@@ -166,6 +179,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.B>;
+    getContractAt(
+      name: "C",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.C>;
 
     // default types
     getContractFactory(
