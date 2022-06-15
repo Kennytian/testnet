@@ -20,9 +20,9 @@ contract Auction {
         owner = payable(msg.sender);
         auctionState = State.Running;
         startBlock = block.number;
-        endBlock = startBlock + 40320;
+        endBlock = startBlock + 3;
         ipfsHash = '';
-        bidIncrement = 100;
+        bidIncrement = 1000000000000000000;
     }
 
     modifier notOwner() {
@@ -34,8 +34,14 @@ contract Auction {
         require(block.number >= startBlock);
         _;
     }
+
     modifier beforeEnd() {
         require(block.number <= endBlock);
+        _;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
         _;
     }
 
@@ -45,6 +51,10 @@ contract Auction {
         } else {
             return b;
         }
+    }
+
+    function cancelAuction() public onlyOwner {
+        auctionState = State.Canceled;
     }
 
     function placeBid() public payable notOwner afterStart beforeEnd {
@@ -60,5 +70,39 @@ contract Auction {
             highestBindingBid = min(currentBid, bids[highestBidder] + bidIncrement);
             highestBidder = payable(msg.sender);
         }
+    }
+
+    function finalizeAuction() public {
+        require(auctionState == State.Canceled || block.number > endBlock);
+        require(msg.sender == owner || bids[msg.sender] > 0);
+
+        address payable recipient;
+        uint value;
+
+        if (auctionState == State.Canceled) {
+            recipient = payable(msg.sender);
+            value = bids[msg.sender];
+        } else {
+            // auction ended(not canceled)
+            if (msg.sender == owner) {
+                // this is the owner
+                recipient = owner;
+                value = highestBindingBid;
+            } else {
+                // this is a bidder
+                if (msg.sender == highestBidder) {
+                    recipient = highestBidder;
+                    value = bids[highestBidder] - highestBindingBid;
+                } else {
+                    recipient = payable(msg.sender);
+                    value = bids[msg.sender];
+                }
+            }
+        }
+        // resetting the bids of the recipient to zero
+        bids[recipient] = 0;
+
+        // sends value to the recipient
+        recipient.transfer(value);
     }
 }

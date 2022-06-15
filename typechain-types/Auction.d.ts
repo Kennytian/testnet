@@ -11,6 +11,7 @@ import {
   PopulatedTransaction,
   BaseContract,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   CallOverrides,
 } from "ethers";
@@ -23,7 +24,9 @@ interface AuctionInterface extends ethers.utils.Interface {
   functions: {
     "auctionState()": FunctionFragment;
     "bids(address)": FunctionFragment;
+    "cancelAuction()": FunctionFragment;
     "endBlock()": FunctionFragment;
+    "finalizeAuction()": FunctionFragment;
     "highestBidder()": FunctionFragment;
     "highestBindingBid()": FunctionFragment;
     "ipfsHash()": FunctionFragment;
@@ -37,7 +40,15 @@ interface AuctionInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "bids", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "cancelAuction",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "endBlock", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "finalizeAuction",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "highestBidder",
     values?: undefined
@@ -59,7 +70,15 @@ interface AuctionInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "bids", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "cancelAuction",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "endBlock", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "finalizeAuction",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "highestBidder",
     data: BytesLike
@@ -124,7 +143,15 @@ export class Auction extends BaseContract {
 
     bids(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    cancelAuction(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     endBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    finalizeAuction(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     highestBidder(overrides?: CallOverrides): Promise<[string]>;
 
@@ -145,7 +172,15 @@ export class Auction extends BaseContract {
 
   bids(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  cancelAuction(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   endBlock(overrides?: CallOverrides): Promise<BigNumber>;
+
+  finalizeAuction(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   highestBidder(overrides?: CallOverrides): Promise<string>;
 
@@ -166,7 +201,11 @@ export class Auction extends BaseContract {
 
     bids(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    cancelAuction(overrides?: CallOverrides): Promise<void>;
+
     endBlock(overrides?: CallOverrides): Promise<BigNumber>;
+
+    finalizeAuction(overrides?: CallOverrides): Promise<void>;
 
     highestBidder(overrides?: CallOverrides): Promise<string>;
 
@@ -188,7 +227,15 @@ export class Auction extends BaseContract {
 
     bids(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    cancelAuction(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     endBlock(overrides?: CallOverrides): Promise<BigNumber>;
+
+    finalizeAuction(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     highestBidder(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -213,7 +260,15 @@ export class Auction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    cancelAuction(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     endBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    finalizeAuction(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     highestBidder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
