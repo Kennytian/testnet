@@ -25,6 +25,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
+      name: "Auction",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Auction__factory>;
+    getContractFactory(
       name: "BytesAndStrings",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BytesAndStrings__factory>;
@@ -40,6 +44,10 @@ declare module "hardhat/types/runtime" {
       name: "FixedSizeArray",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FixedSizeArray__factory>;
+    getContractFactory(
+      name: "Property",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Property__factory>;
     getContractFactory(
       name: "GettersSetters",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -105,6 +113,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
+      name: "Auction",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Auction>;
+    getContractAt(
       name: "BytesAndStrings",
       address: string,
       signer?: ethers.Signer
@@ -124,6 +137,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.FixedSizeArray>;
+    getContractAt(
+      name: "Property",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Property>;
     getContractAt(
       name: "GettersSetters",
       address: string,
