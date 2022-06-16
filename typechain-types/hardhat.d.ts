@@ -33,6 +33,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BytesAndStrings__factory>;
     getContractFactory(
+      name: "CrowdFunding",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.CrowdFunding__factory>;
+    getContractFactory(
       name: "Deposit",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Deposit__factory>;
@@ -122,6 +126,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BytesAndStrings>;
+    getContractAt(
+      name: "CrowdFunding",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.CrowdFunding>;
     getContractAt(
       name: "Deposit",
       address: string,
