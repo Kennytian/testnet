@@ -4,6 +4,7 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -13,7 +14,11 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -28,13 +33,18 @@ export interface CrowdFundingInterface extends utils.Interface {
     "admin()": FunctionFragment;
     "contribute()": FunctionFragment;
     "contributors(address)": FunctionFragment;
+    "createRequest(string,address,uint256)": FunctionFragment;
     "deadline()": FunctionFragment;
     "getBalance()": FunctionFragment;
     "getRefund()": FunctionFragment;
     "goal()": FunctionFragment;
+    "makePayment(uint256)": FunctionFragment;
     "minimumContribution()": FunctionFragment;
     "noOfContributors()": FunctionFragment;
+    "numRequests()": FunctionFragment;
     "raisedAmount()": FunctionFragment;
+    "requests(uint256)": FunctionFragment;
+    "voteRequest(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -42,13 +52,18 @@ export interface CrowdFundingInterface extends utils.Interface {
       | "admin"
       | "contribute"
       | "contributors"
+      | "createRequest"
       | "deadline"
       | "getBalance"
       | "getRefund"
       | "goal"
+      | "makePayment"
       | "minimumContribution"
       | "noOfContributors"
+      | "numRequests"
       | "raisedAmount"
+      | "requests"
+      | "voteRequest"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "admin", values?: undefined): string;
@@ -60,6 +75,14 @@ export interface CrowdFundingInterface extends utils.Interface {
     functionFragment: "contributors",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "createRequest",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
   encodeFunctionData(functionFragment: "deadline", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getBalance",
@@ -68,6 +91,10 @@ export interface CrowdFundingInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "getRefund", values?: undefined): string;
   encodeFunctionData(functionFragment: "goal", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "makePayment",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "minimumContribution",
     values?: undefined
   ): string;
@@ -76,8 +103,20 @@ export interface CrowdFundingInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "numRequests",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "raisedAmount",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "requests",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "voteRequest",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
 
   decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
@@ -86,10 +125,18 @@ export interface CrowdFundingInterface extends utils.Interface {
     functionFragment: "contributors",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "createRequest",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "deadline", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getRefund", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "goal", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "makePayment",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "minimumContribution",
     data: BytesLike
@@ -99,12 +146,65 @@ export interface CrowdFundingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "numRequests",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "raisedAmount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "requests", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "voteRequest",
+    data: BytesLike
+  ): Result;
 
-  events: {};
+  events: {
+    "ContributeEvent(address,uint256)": EventFragment;
+    "CreateRequestEvent(string,address,uint256)": EventFragment;
+    "MakePaymentEvent(address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "ContributeEvent"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CreateRequestEvent"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MakePaymentEvent"): EventFragment;
 }
+
+export interface ContributeEventEventObject {
+  _sender: string;
+  _value: BigNumber;
+}
+export type ContributeEventEvent = TypedEvent<
+  [string, BigNumber],
+  ContributeEventEventObject
+>;
+
+export type ContributeEventEventFilter = TypedEventFilter<ContributeEventEvent>;
+
+export interface CreateRequestEventEventObject {
+  _description: string;
+  _repipient: string;
+  _value: BigNumber;
+}
+export type CreateRequestEventEvent = TypedEvent<
+  [string, string, BigNumber],
+  CreateRequestEventEventObject
+>;
+
+export type CreateRequestEventEventFilter =
+  TypedEventFilter<CreateRequestEventEvent>;
+
+export interface MakePaymentEventEventObject {
+  _recipient: string;
+  _value: BigNumber;
+}
+export type MakePaymentEventEvent = TypedEvent<
+  [string, BigNumber],
+  MakePaymentEventEventObject
+>;
+
+export type MakePaymentEventEventFilter =
+  TypedEventFilter<MakePaymentEventEvent>;
 
 export interface CrowdFunding extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -144,6 +244,13 @@ export interface CrowdFunding extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    createRequest(
+      _description: PromiseOrValue<string>,
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     deadline(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -154,11 +261,36 @@ export interface CrowdFunding extends BaseContract {
 
     goal(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    makePayment(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     minimumContribution(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     noOfContributors(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    numRequests(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     raisedAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, BigNumber, boolean, BigNumber] & {
+        description: string;
+        recipient: string;
+        value: BigNumber;
+        completed: boolean;
+        noOfVoters: BigNumber;
+      }
+    >;
+
+    voteRequest(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   admin(overrides?: CallOverrides): Promise<string>;
@@ -172,6 +304,13 @@ export interface CrowdFunding extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  createRequest(
+    _description: PromiseOrValue<string>,
+    _recipient: PromiseOrValue<string>,
+    _value: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -182,11 +321,36 @@ export interface CrowdFunding extends BaseContract {
 
   goal(overrides?: CallOverrides): Promise<BigNumber>;
 
+  makePayment(
+    _requestNo: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   minimumContribution(overrides?: CallOverrides): Promise<BigNumber>;
 
   noOfContributors(overrides?: CallOverrides): Promise<BigNumber>;
 
+  numRequests(overrides?: CallOverrides): Promise<BigNumber>;
+
   raisedAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  requests(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string, BigNumber, boolean, BigNumber] & {
+      description: string;
+      recipient: string;
+      value: BigNumber;
+      completed: boolean;
+      noOfVoters: BigNumber;
+    }
+  >;
+
+  voteRequest(
+    _requestNo: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     admin(overrides?: CallOverrides): Promise<string>;
@@ -198,6 +362,13 @@ export interface CrowdFunding extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    createRequest(
+      _description: PromiseOrValue<string>,
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -206,14 +377,65 @@ export interface CrowdFunding extends BaseContract {
 
     goal(overrides?: CallOverrides): Promise<BigNumber>;
 
+    makePayment(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     minimumContribution(overrides?: CallOverrides): Promise<BigNumber>;
 
     noOfContributors(overrides?: CallOverrides): Promise<BigNumber>;
 
+    numRequests(overrides?: CallOverrides): Promise<BigNumber>;
+
     raisedAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, BigNumber, boolean, BigNumber] & {
+        description: string;
+        recipient: string;
+        value: BigNumber;
+        completed: boolean;
+        noOfVoters: BigNumber;
+      }
+    >;
+
+    voteRequest(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "ContributeEvent(address,uint256)"(
+      _sender?: null,
+      _value?: null
+    ): ContributeEventEventFilter;
+    ContributeEvent(_sender?: null, _value?: null): ContributeEventEventFilter;
+
+    "CreateRequestEvent(string,address,uint256)"(
+      _description?: null,
+      _repipient?: null,
+      _value?: null
+    ): CreateRequestEventEventFilter;
+    CreateRequestEvent(
+      _description?: null,
+      _repipient?: null,
+      _value?: null
+    ): CreateRequestEventEventFilter;
+
+    "MakePaymentEvent(address,uint256)"(
+      _recipient?: null,
+      _value?: null
+    ): MakePaymentEventEventFilter;
+    MakePaymentEvent(
+      _recipient?: null,
+      _value?: null
+    ): MakePaymentEventEventFilter;
+  };
 
   estimateGas: {
     admin(overrides?: CallOverrides): Promise<BigNumber>;
@@ -227,6 +449,13 @@ export interface CrowdFunding extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    createRequest(
+      _description: PromiseOrValue<string>,
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -237,11 +466,28 @@ export interface CrowdFunding extends BaseContract {
 
     goal(overrides?: CallOverrides): Promise<BigNumber>;
 
+    makePayment(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     minimumContribution(overrides?: CallOverrides): Promise<BigNumber>;
 
     noOfContributors(overrides?: CallOverrides): Promise<BigNumber>;
 
+    numRequests(overrides?: CallOverrides): Promise<BigNumber>;
+
     raisedAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    voteRequest(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -256,6 +502,13 @@ export interface CrowdFunding extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    createRequest(
+      _description: PromiseOrValue<string>,
+      _recipient: PromiseOrValue<string>,
+      _value: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     deadline(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -266,12 +519,29 @@ export interface CrowdFunding extends BaseContract {
 
     goal(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    makePayment(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     minimumContribution(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     noOfContributors(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    numRequests(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     raisedAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    requests(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    voteRequest(
+      _requestNo: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }

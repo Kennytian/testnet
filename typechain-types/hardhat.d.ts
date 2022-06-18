@@ -45,6 +45,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DynamicArrays__factory>;
     getContractFactory(
+      name: "Token",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Token__factory>;
+    getContractFactory(
       name: "FixedSizeArray",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.FixedSizeArray__factory>;
@@ -60,6 +64,14 @@ declare module "hardhat/types/runtime" {
       name: "GlobalVariables",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GlobalVariables__factory>;
+    getContractFactory(
+      name: "A",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.A__factory>;
+    getContractFactory(
+      name: "BaseContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BaseContract__factory>;
     getContractFactory(
       name: "Academy",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -142,6 +154,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.DynamicArrays>;
     getContractAt(
+      name: "Token",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Token>;
+    getContractAt(
       name: "FixedSizeArray",
       address: string,
       signer?: ethers.Signer
@@ -161,6 +178,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.GlobalVariables>;
+    getContractAt(
+      name: "A",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.A>;
+    getContractAt(
+      name: "BaseContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BaseContract>;
     getContractAt(
       name: "Academy",
       address: string,

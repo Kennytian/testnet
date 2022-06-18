@@ -3,10 +3,14 @@
 /* eslint-disable */
 import type * as crownFundingSol from "./CrownFunding.sol";
 export type { crownFundingSol };
+import type * as eventsSol from "./Events.sol";
+export type { eventsSol };
 import type * as fixedArraySol from "./FixedArray.sol";
 export type { fixedArraySol };
 import type * as functionModifierSol from "./FunctionModifier.sol";
 export type { functionModifierSol };
+import type * as inheritanceSol from "./Inheritance.sol";
+export type { inheritanceSol };
 import type * as instructorSol from "./Instructor.sol";
 export type { instructorSol };
 import type * as mappingSol from "./Mapping.sol";

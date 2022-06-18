@@ -86,7 +86,7 @@ contract CrowdFunding {
         emit CreateRequestEvent(_description, _recipient, _value);
     }
 
-    function makePayment(uint requestNo) public onlyAdmin {
+    function makePayment(uint _requestNo) public onlyAdmin {
         require(raisedAmount >= goal);
         Request storage thisRequest = requests[_requestNo];
         require(thisRequest.completed == false, 'The request has been completed!');

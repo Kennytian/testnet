@@ -2,8 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as crownFundingSol from "./CrownFunding.sol";
+export * as eventsSol from "./Events.sol";
 export * as fixedArraySol from "./FixedArray.sol";
 export * as functionModifierSol from "./FunctionModifier.sol";
+export * as inheritanceSol from "./Inheritance.sol";
 export * as instructorSol from "./Instructor.sol";
 export * as mappingSol from "./Mapping.sol";
 export * as visibilitySol from "./Visibility.sol";
