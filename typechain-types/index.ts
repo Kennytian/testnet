@@ -22,6 +22,8 @@ export type { Deposit } from "./contracts/Deposit";
 export { Deposit__factory } from "./factories/contracts/Deposit__factory";
 export type { DynamicArrays } from "./contracts/DynamicArrays";
 export { DynamicArrays__factory } from "./factories/contracts/DynamicArrays__factory";
+export type { ERC20Interface } from "./contracts/ERC20StateVars.sol/ERC20Interface";
+export { ERC20Interface__factory } from "./factories/contracts/ERC20StateVars.sol/ERC20Interface__factory";
 export type { Token } from "./contracts/Events.sol/Token";
 export { Token__factory } from "./factories/contracts/Events.sol/Token__factory";
 export type { FixedSizeArray } from "./contracts/FixedArray.sol/FixedSizeArray";

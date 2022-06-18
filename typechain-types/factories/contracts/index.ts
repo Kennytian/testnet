@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as crownFundingSol from "./CrownFunding.sol";
+export * as erc20StateVarsSol from "./ERC20StateVars.sol";
 export * as eventsSol from "./Events.sol";
 export * as fixedArraySol from "./FixedArray.sol";
 export * as functionModifierSol from "./FunctionModifier.sol";

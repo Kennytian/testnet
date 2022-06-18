@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as crownFundingSol from "./CrownFunding.sol";
 export type { crownFundingSol };
+import type * as erc20StateVarsSol from "./ERC20StateVars.sol";
+export type { erc20StateVarsSol };
 import type * as eventsSol from "./Events.sol";
 export type { eventsSol };
 import type * as fixedArraySol from "./FixedArray.sol";
