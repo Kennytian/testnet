@@ -27,21 +27,42 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
-export interface ERC20InterfaceInterface extends utils.Interface {
+export interface CryptosInterface extends utils.Interface {
   functions: {
     "balanceOf(address)": FunctionFragment;
+    "balances(address)": FunctionFragment;
+    "decimals()": FunctionFragment;
+    "founder()": FunctionFragment;
+    "name()": FunctionFragment;
+    "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "balanceOf" | "totalSupply" | "transfer"
+    nameOrSignatureOrTopic:
+      | "balanceOf"
+      | "balances"
+      | "decimals"
+      | "founder"
+      | "name"
+      | "symbol"
+      | "totalSupply"
+      | "transfer"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "balances",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: "founder", values?: undefined): string;
+  encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -52,6 +73,11 @@ export interface ERC20InterfaceInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "founder", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -77,12 +103,12 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
-export interface ERC20Interface extends BaseContract {
+export interface Cryptos extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ERC20InterfaceInterface;
+  interface: CryptosInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -109,6 +135,19 @@ export interface ERC20Interface extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { balance: BigNumber }>;
 
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    decimals(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    founder(overrides?: CallOverrides): Promise<[string]>;
+
+    name(overrides?: CallOverrides): Promise<[string]>;
+
+    symbol(overrides?: CallOverrides): Promise<[string]>;
+
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
@@ -123,6 +162,19 @@ export interface ERC20Interface extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  balances(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+  founder(overrides?: CallOverrides): Promise<string>;
+
+  name(overrides?: CallOverrides): Promise<string>;
+
+  symbol(overrides?: CallOverrides): Promise<string>;
+
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
@@ -136,6 +188,19 @@ export interface ERC20Interface extends BaseContract {
       tokenOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    founder(overrides?: CallOverrides): Promise<string>;
+
+    name(overrides?: CallOverrides): Promise<string>;
+
+    symbol(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -165,6 +230,19 @@ export interface ERC20Interface extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    founder(overrides?: CallOverrides): Promise<BigNumber>;
+
+    name(overrides?: CallOverrides): Promise<BigNumber>;
+
+    symbol(overrides?: CallOverrides): Promise<BigNumber>;
+
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
@@ -179,6 +257,19 @@ export interface ERC20Interface extends BaseContract {
       tokenOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    founder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

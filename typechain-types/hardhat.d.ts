@@ -45,6 +45,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DynamicArrays__factory>;
     getContractFactory(
+      name: "Cryptos",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Cryptos__factory>;
+    getContractFactory(
       name: "ERC20Interface",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Interface__factory>;
@@ -157,6 +161,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.DynamicArrays>;
+    getContractAt(
+      name: "Cryptos",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Cryptos>;
     getContractAt(
       name: "ERC20Interface",
       address: string,
