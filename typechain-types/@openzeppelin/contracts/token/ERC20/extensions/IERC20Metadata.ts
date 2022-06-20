@@ -25,16 +25,14 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../common";
+} from "../../../../../common";
 
-export interface CryptosInterface extends utils.Interface {
+export interface IERC20MetadataInterface extends utils.Interface {
   functions: {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "balances(address)": FunctionFragment;
     "decimals()": FunctionFragment;
-    "founder()": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -47,9 +45,7 @@ export interface CryptosInterface extends utils.Interface {
       | "allowance"
       | "approve"
       | "balanceOf"
-      | "balances"
       | "decimals"
-      | "founder"
       | "name"
       | "symbol"
       | "totalSupply"
@@ -69,12 +65,7 @@ export interface CryptosInterface extends utils.Interface {
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "balances",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(functionFragment: "founder", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -97,9 +88,7 @@ export interface CryptosInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "founder", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
@@ -114,19 +103,17 @@ export interface CryptosInterface extends utils.Interface {
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
-    "Invest(address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Invest"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
 export interface ApprovalEventObject {
-  tokenOwner: string;
+  owner: string;
   spender: string;
-  tokens: BigNumber;
+  value: BigNumber;
 }
 export type ApprovalEvent = TypedEvent<
   [string, string, BigNumber],
@@ -135,22 +122,10 @@ export type ApprovalEvent = TypedEvent<
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
 
-export interface InvestEventObject {
-  tokenOwner: string;
-  value: BigNumber;
-  tokens: BigNumber;
-}
-export type InvestEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
-  InvestEventObject
->;
-
-export type InvestEventFilter = TypedEventFilter<InvestEvent>;
-
 export interface TransferEventObject {
   from: string;
   to: string;
-  tokens: BigNumber;
+  value: BigNumber;
 }
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber],
@@ -159,12 +134,12 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
-export interface Cryptos extends BaseContract {
+export interface IERC20Metadata extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: CryptosInterface;
+  interface: IERC20MetadataInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -187,30 +162,23 @@ export interface Cryptos extends BaseContract {
 
   functions: {
     allowance(
-      tokenOwner: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber] & { remaining: BigNumber }>;
+    ): Promise<[BigNumber]>;
 
     approve(
       spender: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     balanceOf(
-      tokenOwner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { balance: BigNumber }>;
-
-    balances(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    decimals(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    founder(overrides?: CallOverrides): Promise<[string]>;
+    decimals(overrides?: CallOverrides): Promise<[number]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -220,43 +188,36 @@ export interface Cryptos extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   allowance(
-    tokenOwner: PromiseOrValue<string>,
+    owner: PromiseOrValue<string>,
     spender: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   approve(
     spender: PromiseOrValue<string>,
-    tokens: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   balanceOf(
-    tokenOwner: PromiseOrValue<string>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  balances(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  decimals(overrides?: CallOverrides): Promise<BigNumber>;
-
-  founder(overrides?: CallOverrides): Promise<string>;
+  decimals(overrides?: CallOverrides): Promise<number>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -266,43 +227,36 @@ export interface Cryptos extends BaseContract {
 
   transfer(
     to: PromiseOrValue<string>,
-    tokens: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferFrom(
     from: PromiseOrValue<string>,
     to: PromiseOrValue<string>,
-    tokens: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     allowance(
-      tokenOwner: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approve(
       spender: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     balanceOf(
-      tokenOwner: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    balances(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    decimals(overrides?: CallOverrides): Promise<BigNumber>;
-
-    founder(overrides?: CallOverrides): Promise<string>;
+    decimals(overrides?: CallOverrides): Promise<number>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -312,79 +266,61 @@ export interface Cryptos extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
 
   filters: {
     "Approval(address,address,uint256)"(
-      tokenOwner?: PromiseOrValue<string> | null,
+      owner?: PromiseOrValue<string> | null,
       spender?: PromiseOrValue<string> | null,
-      tokens?: null
+      value?: null
     ): ApprovalEventFilter;
     Approval(
-      tokenOwner?: PromiseOrValue<string> | null,
+      owner?: PromiseOrValue<string> | null,
       spender?: PromiseOrValue<string> | null,
-      tokens?: null
+      value?: null
     ): ApprovalEventFilter;
-
-    "Invest(address,uint256,uint256)"(
-      tokenOwner?: PromiseOrValue<string> | null,
-      value?: null,
-      tokens?: null
-    ): InvestEventFilter;
-    Invest(
-      tokenOwner?: PromiseOrValue<string> | null,
-      value?: null,
-      tokens?: null
-    ): InvestEventFilter;
 
     "Transfer(address,address,uint256)"(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
-      tokens?: null
+      value?: null
     ): TransferEventFilter;
     Transfer(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
-      tokens?: null
+      value?: null
     ): TransferEventFilter;
   };
 
   estimateGas: {
     allowance(
-      tokenOwner: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approve(
       spender: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     balanceOf(
-      tokenOwner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    balances(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
-
-    founder(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -394,44 +330,37 @@ export interface Cryptos extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     allowance(
-      tokenOwner: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     approve(
       spender: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      tokenOwner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    balances(
-      arg0: PromiseOrValue<string>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    founder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -441,14 +370,14 @@ export interface Cryptos extends BaseContract {
 
     transfer(
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
-      tokens: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

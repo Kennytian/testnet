@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -27,16 +28,31 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
-export interface CryptosInterface extends utils.Interface {
+export interface CryptosICOInterface extends utils.Interface {
   functions: {
+    "admin()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "balances(address)": FunctionFragment;
+    "changeDepositAddress(address)": FunctionFragment;
     "decimals()": FunctionFragment;
+    "deposit()": FunctionFragment;
     "founder()": FunctionFragment;
+    "getCurrentState()": FunctionFragment;
+    "halt()": FunctionFragment;
+    "hardCap()": FunctionFragment;
+    "icoState()": FunctionFragment;
+    "invest()": FunctionFragment;
+    "maxInvestment()": FunctionFragment;
+    "minInvestment()": FunctionFragment;
     "name()": FunctionFragment;
+    "raisedAmount()": FunctionFragment;
+    "resume()": FunctionFragment;
+    "saleEnd()": FunctionFragment;
+    "saleStart()": FunctionFragment;
     "symbol()": FunctionFragment;
+    "tokenTradeStart()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
@@ -44,19 +60,35 @@ export interface CryptosInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "admin"
       | "allowance"
       | "approve"
       | "balanceOf"
       | "balances"
+      | "changeDepositAddress"
       | "decimals"
+      | "deposit"
       | "founder"
+      | "getCurrentState"
+      | "halt"
+      | "hardCap"
+      | "icoState"
+      | "invest"
+      | "maxInvestment"
+      | "minInvestment"
       | "name"
+      | "raisedAmount"
+      | "resume"
+      | "saleEnd"
+      | "saleStart"
       | "symbol"
+      | "tokenTradeStart"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "admin", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
@@ -73,10 +105,42 @@ export interface CryptosInterface extends utils.Interface {
     functionFragment: "balances",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "changeDepositAddress",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
   encodeFunctionData(functionFragment: "founder", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getCurrentState",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "halt", values?: undefined): string;
+  encodeFunctionData(functionFragment: "hardCap", values?: undefined): string;
+  encodeFunctionData(functionFragment: "icoState", values?: undefined): string;
+  encodeFunctionData(functionFragment: "invest", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "maxInvestment",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "minInvestment",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "raisedAmount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "resume", values?: undefined): string;
+  encodeFunctionData(functionFragment: "saleEnd", values?: undefined): string;
+  encodeFunctionData(functionFragment: "saleStart", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "tokenTradeStart",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -94,14 +158,47 @@ export interface CryptosInterface extends utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeDepositAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "founder", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getCurrentState",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "halt", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "hardCap", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "icoState", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "invest", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "maxInvestment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "minInvestment",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "raisedAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "resume", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "saleEnd", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "saleStart", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "tokenTradeStart",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -159,12 +256,12 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
-export interface Cryptos extends BaseContract {
+export interface CryptosICO extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: CryptosInterface;
+  interface: CryptosICOInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -186,6 +283,8 @@ export interface Cryptos extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    admin(overrides?: CallOverrides): Promise<[string]>;
+
     allowance(
       tokenOwner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -208,13 +307,50 @@ export interface Cryptos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    changeDepositAddress(
+      newDeposit: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    deposit(overrides?: CallOverrides): Promise<[string]>;
 
     founder(overrides?: CallOverrides): Promise<[string]>;
 
+    getCurrentState(overrides?: CallOverrides): Promise<[number]>;
+
+    halt(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    hardCap(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    icoState(overrides?: CallOverrides): Promise<[number]>;
+
+    invest(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    maxInvestment(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    minInvestment(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
+    raisedAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    resume(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    saleEnd(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    saleStart(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     symbol(overrides?: CallOverrides): Promise<[string]>;
+
+    tokenTradeStart(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -231,6 +367,8 @@ export interface Cryptos extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  admin(overrides?: CallOverrides): Promise<string>;
 
   allowance(
     tokenOwner: PromiseOrValue<string>,
@@ -254,13 +392,50 @@ export interface Cryptos extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  changeDepositAddress(
+    newDeposit: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+  deposit(overrides?: CallOverrides): Promise<string>;
 
   founder(overrides?: CallOverrides): Promise<string>;
 
+  getCurrentState(overrides?: CallOverrides): Promise<number>;
+
+  halt(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  hardCap(overrides?: CallOverrides): Promise<BigNumber>;
+
+  icoState(overrides?: CallOverrides): Promise<number>;
+
+  invest(
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  maxInvestment(overrides?: CallOverrides): Promise<BigNumber>;
+
+  minInvestment(overrides?: CallOverrides): Promise<BigNumber>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
+  raisedAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  resume(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  saleEnd(overrides?: CallOverrides): Promise<BigNumber>;
+
+  saleStart(overrides?: CallOverrides): Promise<BigNumber>;
+
   symbol(overrides?: CallOverrides): Promise<string>;
+
+  tokenTradeStart(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -278,6 +453,8 @@ export interface Cryptos extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    admin(overrides?: CallOverrides): Promise<string>;
+
     allowance(
       tokenOwner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -300,13 +477,44 @@ export interface Cryptos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    changeDepositAddress(
+      newDeposit: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    deposit(overrides?: CallOverrides): Promise<string>;
 
     founder(overrides?: CallOverrides): Promise<string>;
 
+    getCurrentState(overrides?: CallOverrides): Promise<number>;
+
+    halt(overrides?: CallOverrides): Promise<void>;
+
+    hardCap(overrides?: CallOverrides): Promise<BigNumber>;
+
+    icoState(overrides?: CallOverrides): Promise<number>;
+
+    invest(overrides?: CallOverrides): Promise<boolean>;
+
+    maxInvestment(overrides?: CallOverrides): Promise<BigNumber>;
+
+    minInvestment(overrides?: CallOverrides): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<string>;
 
+    raisedAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    resume(overrides?: CallOverrides): Promise<void>;
+
+    saleEnd(overrides?: CallOverrides): Promise<BigNumber>;
+
+    saleStart(overrides?: CallOverrides): Promise<BigNumber>;
+
     symbol(overrides?: CallOverrides): Promise<string>;
+
+    tokenTradeStart(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -360,6 +568,8 @@ export interface Cryptos extends BaseContract {
   };
 
   estimateGas: {
+    admin(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       tokenOwner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -382,13 +592,50 @@ export interface Cryptos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    changeDepositAddress(
+      newDeposit: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    deposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     founder(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getCurrentState(overrides?: CallOverrides): Promise<BigNumber>;
+
+    halt(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    hardCap(overrides?: CallOverrides): Promise<BigNumber>;
+
+    icoState(overrides?: CallOverrides): Promise<BigNumber>;
+
+    invest(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    maxInvestment(overrides?: CallOverrides): Promise<BigNumber>;
+
+    minInvestment(overrides?: CallOverrides): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
+    raisedAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    resume(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    saleEnd(overrides?: CallOverrides): Promise<BigNumber>;
+
+    saleStart(overrides?: CallOverrides): Promise<BigNumber>;
+
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokenTradeStart(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -407,6 +654,8 @@ export interface Cryptos extends BaseContract {
   };
 
   populateTransaction: {
+    admin(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     allowance(
       tokenOwner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -429,13 +678,50 @@ export interface Cryptos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    changeDepositAddress(
+      newDeposit: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    deposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     founder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getCurrentState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    halt(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    hardCap(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    icoState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    invest(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    maxInvestment(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    minInvestment(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    raisedAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    resume(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    saleEnd(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    saleStart(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tokenTradeStart(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

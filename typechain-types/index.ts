@@ -24,6 +24,8 @@ export type { DynamicArrays } from "./contracts/DynamicArrays";
 export { DynamicArrays__factory } from "./factories/contracts/DynamicArrays__factory";
 export type { Cryptos } from "./contracts/ERC20StateVars.sol/Cryptos";
 export { Cryptos__factory } from "./factories/contracts/ERC20StateVars.sol/Cryptos__factory";
+export type { CryptosICO } from "./contracts/ERC20StateVars.sol/CryptosICO";
+export { CryptosICO__factory } from "./factories/contracts/ERC20StateVars.sol/CryptosICO__factory";
 export type { ERC20Interface } from "./contracts/ERC20StateVars.sol/ERC20Interface";
 export { ERC20Interface__factory } from "./factories/contracts/ERC20StateVars.sol/ERC20Interface__factory";
 export type { Token } from "./contracts/Events.sol/Token";

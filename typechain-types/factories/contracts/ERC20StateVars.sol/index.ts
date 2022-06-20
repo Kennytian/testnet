@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export { Cryptos__factory } from "./Cryptos__factory";
+export { CryptosICO__factory } from "./CryptosICO__factory";
 export { ERC20Interface__factory } from "./ERC20Interface__factory";

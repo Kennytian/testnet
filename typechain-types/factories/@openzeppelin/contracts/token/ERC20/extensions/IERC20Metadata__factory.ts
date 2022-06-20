@@ -5,9 +5,9 @@
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
 import type {
-  ERC20Interface,
-  ERC20InterfaceInterface,
-} from "../../../contracts/ERC20StateVars.sol/ERC20Interface";
+  IERC20Metadata,
+  IERC20MetadataInterface,
+} from "../../../../../../@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 
 const _abi = [
   {
@@ -16,7 +16,7 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
-        name: "tokenOwner",
+        name: "owner",
         type: "address",
       },
       {
@@ -28,36 +28,11 @@ const _abi = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "tokens",
+        name: "value",
         type: "uint256",
       },
     ],
     name: "Approval",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "tokenOwner",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "tokens",
-        type: "uint256",
-      },
-    ],
-    name: "Invest",
     type: "event",
   },
   {
@@ -78,7 +53,7 @@ const _abi = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "tokens",
+        name: "value",
         type: "uint256",
       },
     ],
@@ -89,7 +64,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "tokenOwner",
+        name: "owner",
         type: "address",
       },
       {
@@ -102,7 +77,7 @@ const _abi = [
     outputs: [
       {
         internalType: "uint256",
-        name: "remaining",
+        name: "",
         type: "uint256",
       },
     ],
@@ -118,7 +93,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "tokens",
+        name: "amount",
         type: "uint256",
       },
     ],
@@ -126,7 +101,7 @@ const _abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool",
       },
     ],
@@ -137,7 +112,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "tokenOwner",
+        name: "account",
         type: "address",
       },
     ],
@@ -145,8 +120,47 @@ const _abi = [
     outputs: [
       {
         internalType: "uint256",
-        name: "balance",
+        name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "decimals",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "symbol",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -174,7 +188,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "tokens",
+        name: "amount",
         type: "uint256",
       },
     ],
@@ -182,7 +196,7 @@ const _abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool",
       },
     ],
@@ -203,7 +217,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "tokens",
+        name: "amount",
         type: "uint256",
       },
     ],
@@ -211,7 +225,7 @@ const _abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool",
       },
     ],
@@ -220,15 +234,15 @@ const _abi = [
   },
 ];
 
-export class ERC20Interface__factory {
+export class IERC20Metadata__factory {
   static readonly abi = _abi;
-  static createInterface(): ERC20InterfaceInterface {
-    return new utils.Interface(_abi) as ERC20InterfaceInterface;
+  static createInterface(): IERC20MetadataInterface {
+    return new utils.Interface(_abi) as IERC20MetadataInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): ERC20Interface {
-    return new Contract(address, _abi, signerOrProvider) as ERC20Interface;
+  ): IERC20Metadata {
+    return new Contract(address, _abi, signerOrProvider) as IERC20Metadata;
   }
 }

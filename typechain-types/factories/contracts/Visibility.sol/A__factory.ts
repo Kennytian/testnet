@@ -4,20 +4,59 @@
 import { Signer, utils, Contract, ContractFactory, Overrides } from "ethers";
 import type { Provider, TransactionRequest } from "@ethersproject/providers";
 import type { PromiseOrValue } from "../../../common";
-import type { A, AInterface } from "../../../contracts/Inheritance.sol/A";
+import type { A, AInterface } from "../../../contracts/Visibility.sol/A";
 
 const _abi = [
   {
-    inputs: [
+    inputs: [],
+    name: "f2",
+    outputs: [
       {
         internalType: "int256",
-        name: "_x",
+        name: "",
         type: "int256",
       },
     ],
-    name: "setX",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "f4",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "f5",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getY",
+    outputs: [
+      {
+        internalType: "int256",
+        name: "",
+        type: "int256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -33,23 +72,10 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-  {
-    inputs: [],
-    name: "y",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
 ];
 
 const _bytecode =
-  "0x6080604052600360015534801561001557600080fd5b5061017c806100256000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80630c55699c14610046578063a0fc499414610064578063a56dfe4a14610080575b600080fd5b61004e61009e565b60405161005b91906100cd565b60405180910390f35b61007e60048036038101906100799190610119565b6100a4565b005b6100886100ae565b60405161009591906100cd565b60405180910390f35b60005481565b8060008190555050565b60015481565b6000819050919050565b6100c7816100b4565b82525050565b60006020820190506100e260008301846100be565b92915050565b600080fd5b6100f6816100b4565b811461010157600080fd5b50565b600081359050610113816100ed565b92915050565b60006020828403121561012f5761012e6100e8565b5b600061013d84828501610104565b9150509291505056fea264697066735822122046bae82b2c3fef2588cbe40cdc61785ed26c92a47e4e269bcb110df75ac7e72364736f6c634300080f0033";
+  "0x6080604052600a600055601460015534801561001a57600080fd5b5061019c8061002a6000396000f3fe608060405234801561001057600080fd5b50600436106100575760003560e01c80630b7f16651461005c5780630c55699c1461007a5780633c9d377d146100985780639942ec6f146100b6578063c3f90202146100d4575b600080fd5b6100646100f2565b604051610071919061014b565b60405180910390f35b6100826100fc565b60405161008f919061014b565b60405180910390f35b6100a0610102565b6040516100ad919061014b565b60405180910390f35b6100be61010c565b6040516100cb919061014b565b60405180910390f35b6100dc610120565b6040516100e9919061014b565b60405180910390f35b6000600154905090565b60005481565b6000808091505090565b600080610117610129565b90508091505090565b60008054905090565b60008054905090565b6000819050919050565b61014581610132565b82525050565b6000602082019050610160600083018461013c565b9291505056fea2646970667358221220c89703109499d50e048c8eb15025670a834a4acf10e86fd169365c5c599c436e64736f6c634300080f0033";
 
 type AConstructorParams =
   | [signer?: Signer]
