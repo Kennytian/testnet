@@ -35,6 +35,7 @@ export interface CryptosICOInterface extends utils.Interface {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "balances(address)": FunctionFragment;
+    "burn()": FunctionFragment;
     "changeDepositAddress(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "deposit()": FunctionFragment;
@@ -65,6 +66,7 @@ export interface CryptosICOInterface extends utils.Interface {
       | "approve"
       | "balanceOf"
       | "balances"
+      | "burn"
       | "changeDepositAddress"
       | "decimals"
       | "deposit"
@@ -105,6 +107,7 @@ export interface CryptosICOInterface extends utils.Interface {
     functionFragment: "balances",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(functionFragment: "burn", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "changeDepositAddress",
     values: [PromiseOrValue<string>]
@@ -163,6 +166,7 @@ export interface CryptosICOInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "changeDepositAddress",
     data: BytesLike
@@ -307,6 +311,10 @@ export interface CryptosICO extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    burn(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     changeDepositAddress(
       newDeposit: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -392,6 +400,10 @@ export interface CryptosICO extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  burn(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   changeDepositAddress(
     newDeposit: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -476,6 +488,8 @@ export interface CryptosICO extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    burn(overrides?: CallOverrides): Promise<boolean>;
 
     changeDepositAddress(
       newDeposit: PromiseOrValue<string>,
@@ -592,6 +606,10 @@ export interface CryptosICO extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    burn(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     changeDepositAddress(
       newDeposit: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -676,6 +694,10 @@ export interface CryptosICO extends BaseContract {
     balances(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    burn(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     changeDepositAddress(
